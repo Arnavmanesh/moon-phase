@@ -40,6 +40,20 @@
             font-size: 3rem;
             line-height: 1;
         }
+        .btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        #forecast-container {
+            display: none; /* Initially hidden */
+        }
         /* Custom scrollbar for forecast */
         #forecast-container::-webkit-scrollbar {
             height: 6px;
@@ -64,11 +78,18 @@
         <h1 class="main-title text-4xl md:text-6xl font-bold text-slate-100 mb-12">Moon Phase Tracker</h1>
 
         <!-- Today's Moon Phase Section -->
-        <section id="today-section" class="mb-12">
+        <section id="today-section" class="mb-8">
             <div id="today-content" class="flex flex-col items-center justify-center min-h-[250px]">
                 <!-- Content will be injected here by JS -->
             </div>
         </section>
+
+        <!-- Controls -->
+        <div class="mb-8">
+            <button id="forecast-btn" class="btn text-white font-bold py-3 px-6 rounded-lg shadow-lg">
+                Show Next 7 Days
+            </button>
+        </div>
 
         <!-- 7-Day Forecast Section -->
         <div id="forecast-container" class="w-full overflow-x-auto pb-4">
@@ -83,6 +104,8 @@
         // DOM Elements
         const todayContent = document.getElementById('today-content');
         const forecastGrid = document.getElementById('forecast-grid');
+        const forecastBtn = document.getElementById('forecast-btn');
+        const forecastContainer = document.getElementById('forecast-container');
 
         // --- Moon Phase Calculation Logic ---
 
@@ -161,6 +184,18 @@
                 forecastGrid.appendChild(card);
             }
         }
+
+        // --- Event Listeners ---
+        forecastBtn.addEventListener('click', () => {
+            const isHidden = forecastContainer.style.display === 'none' || forecastContainer.style.display === '';
+            if (isHidden) {
+                forecastContainer.style.display = 'block';
+                forecastBtn.textContent = 'Hide Forecast';
+            } else {
+                forecastContainer.style.display = 'none';
+                forecastBtn.textContent = 'Show Next 7 Days';
+            }
+        });
 
         // --- Initial Load ---
         window.addEventListener('load', displayData);
